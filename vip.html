@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Area - Art Free Income</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3436;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 50px;
+        }
+
+        /* Header Section */
+        .header-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin-bottom: 25px;
+        }
+
+        .user-level-info h2 {
+            font-size: 1.8rem;
+            color: #2d3436;
+            margin-bottom: 5px;
+        }
+
+        .referral-badge {
+            background: #e3f2fd;
+            color: #0984e3;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* Level Cards */
+        .level-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .level-card.active-level {
+            border-color: #6c5ce7;
+            background: #f8f9fe;
+        }
+
+        .level-card.locked {
+            opacity: 0.7;
+            filter: grayscale(1);
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .level-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #2d3436;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .daily-income {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #00b894;
+        }
+
+        .progress-bar {
+            background: #dfe6e9;
+            height: 8px;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .requirements {
+            font-size: 0.85rem;
+            color: #636e72;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Claim Button */
+        .claim-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-locked {
+            background: #b2bec3;
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .btn-claim {
+            background: linear-gradient(to right, #6c5ce7, #a29bfe);
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+
+        .btn-claimed {
+            background: #00b894;
+            color: white;
+            cursor: default;
+        }
+
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- User Stats Header -->
+        <div class="header-card">
+            <div class="user-level-info">
+                <h2>VIP Lounge</h2>
+                <div class="referral-badge">
+                    My Referrals: <span id="my-referral-count">0</span>
+                </div>
+                <p style="font-size: 0.9rem; color: #636e72;">
+                    Your current level: <strong id="current-level-name" style="color: #6c5ce7;">No Rank</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- Level Lists -->
+        <div id="levels-container">
+            <!-- Levels will be generated by JS -->
+            <div style="text-align: center; color: white;">Loading levels...</div>
+        </div>
+
+        <a href="home.html" class="home-link">Back to Dashboard</a>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-6c8nN8TUj9V8km-NAVkjgoIeQ5m7_ms",
+            authDomain: "art-732d1.firebaseapp.com",
+            databaseURL: "https://art-732d1-default-rtdb.firebaseio.com",
+            projectId: "art-732d1",
+            storageBucket: "art-732d1.appspot.com",
+            messagingSenderId: "901862985233",
+            appId: "1:901862985233:web:ddfd6b7c8a57c65ef0ebb0"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        let currentUser = null;
+
+        // --- VIP Configuration ---
+        const vipLevels = [
+            { id: 1, name: "Level 1", req: 25, bonus: 100 },
+            { id: 2, name: "Level 2", req: 50, bonus: 200 },
+            { id: 3, name: "Level 3", req: 75, bonus: 300 },
+            { id: 4, name: "Level 4", req: 100, bonus: 500 },
+            { id: 5, name: "Level 5", req: 125, bonus: 600 },
+            { id: 6, name: "Level 6", req: 150, bonus: 800 },
+            { id: 7, name: "Level 7", req: 200, bonus: 1200 } // Assumed 200 for logical progression
+        ];
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                loadUserData();
+            } else {
+                window.location.href = 'login_register.html';
+            }
+        });
+
+        function loadUserData() {
+            const userRef = database.ref('users/' + currentUser.uid);
+            userRef.on('value', (snapshot) => {
+                const data = snapshot.val() || {};
+                const referrals = data.referralCount || 0;
+                const lastClaim = data.lastVipClaimDate || ""; // Format: YYYY-MM-DD
+                
+                updateUI(referrals, lastClaim);
+            });
+        }
+
+        function updateUI(referrals, lastClaim) {
+            document.getElementById('my-referral-count').innerText = referrals;
+            
+            const container = document.getElementById('levels-container');
+            container.innerHTML = ""; // Clear loader
+
+            const today = new Date().toISOString().split('T')[0];
+            let currentLevelName = "No Rank";
+            let highestUnlockedLevel = 0;
+
+            // Determine highest unlocked level
+            vipLevels.forEach(level => {
+                if (referrals >= level.req) {
+                    highestUnlockedLevel = level.id;
+                    currentLevelName = level.name;
+                }
+            });
+
+            document.getElementById('current-level-name').innerText = currentLevelName;
+
+            // Generate Cards
+            vipLevels.forEach(level => {
+                const isUnlocked = referrals >= level.req;
+                const isCurrentMax = level.id === highestUnlockedLevel;
+                const progressPercent = Math.min((referrals / level.req) * 100, 100);
+                
+                // Button Logic
+                let btnHtml = "";
+                if (!isUnlocked) {
+                    btnHtml = `<button class="claim-btn btn-locked"><i class="fas fa-lock"></i> Locked</button>`;
+                } else if (isCurrentMax) {
+                    // Only allow claiming the highest level achieved
+                    if (lastClaim === today) {
+                        btnHtml = `<button class="claim-btn btn-claimed"><i class="fas fa-check"></i> Claimed Today</button>`;
+                    } else {
+                        btnHtml = `<button class="claim-btn btn-claim" onclick="claimBonus(${level.id}, ${level.bonus})">Claim ${level.bonus} TC</button>`;
+                    }
+                } else {
+                    // Unlocked but lower level (Assuming you only claim highest rank salary)
+                    btnHtml = `<button class="claim-btn btn-locked">Passed</button>`;
+                }
+
+                const cardHtml = `
+                    <div class="level-card ${isUnlocked ? (isCurrentMax ? 'active-level' : '') : 'locked'}">
+                        <div class="level-header">
+                            <span class="level-title">
+                                <i class="fas fa-crown" style="color: ${isUnlocked ? '#f1c40f' : '#b2bec3'}"></i> 
+                                ${level.name}
+                            </span>
+                            <span class="daily-income">+${level.bonus} TC/Day</span>
+                        </div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                        
+                        <div class="requirements">
+                            <span>Progress: ${referrals} / ${level.req} Refs</span>
+                            <span>${Math.floor(progressPercent)}%</span>
+                        </div>
+
+                        ${btnHtml}
+                    </div>
+                `;
+                container.innerHTML += cardHtml;
+            });
+        }
+
+        function claimBonus(levelId, amount) {
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Security check using Transaction to prevent double claim
+            const userRef = database.ref('users/' + currentUser.uid);
+
+            userRef.transaction((userData) => {
+                if (userData) {
+                    if (userData.lastVipClaimDate === today) {
+                        // Already claimed
+                        return; // Abort transaction
+                    }
+                    
+                    // Update balance and date
+                    userData.balance = (userData.balance || 0) + amount;
+                    userData.lastVipClaimDate = today;
+                    return userData;
+                }
+                return userData;
+            }, (error, committed, snapshot) => {
+                if (error) {
+                    alert('Transaction failed abnormally!');
+                } else if (!committed) {
+                    alert('You have already claimed your daily bonus today!');
+                } else {
+                    alert(`Congratulation! You claimed ${amount} Taka Coins.`);
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

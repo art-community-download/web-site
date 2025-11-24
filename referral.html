@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invite Friends - Art Free Income</title>
+    <title>Team & Referral - Art Free Income</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
@@ -20,88 +20,86 @@
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
+            color: #2d3436;
         }
 
         .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 30px;
+        }
+
+        /* Header Stats Card */
+        .stats-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 2.5rem 2rem;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 500px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
             text-align: center;
         }
 
-        .header-icon {
-            width: 80px;
-            height: 80px;
-            background: #e3f2fd;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem auto;
-            color: #2196f3;
-            font-size: 2.5rem;
-            box-shadow: 0 10px 20px rgba(33, 150, 243, 0.2);
-        }
-
-        h2 {
-            color: #2d3436;
-            margin-bottom: 0.5rem;
-            font-size: 1.8rem;
-        }
-
-        p {
+        .total-team-label {
+            font-size: 0.9rem;
             color: #636e72;
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-            line-height: 1.5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Input Group Styling */
-        .input-group {
-            text-align: left;
-            margin-bottom: 1.5rem;
+        .total-team-count {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #6c5ce7;
+            margin: 5px 0;
         }
 
-        .input-label {
-            font-size: 0.85rem;
-            font-weight: 600;
+        .grid-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .stat-box h4 {
+            font-size: 1.2rem;
             color: #2d3436;
-            margin-bottom: 8px;
-            display: block;
-            margin-left: 5px;
+        }
+
+        .stat-box p {
+            font-size: 0.8rem;
+            color: #b2bec3;
+        }
+
+        /* Invite Link Section */
+        .invite-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
         .copy-box {
             display: flex;
             background: #f8f9fa;
-            border: 2px solid #e1e1e1;
-            border-radius: 12px;
+            border: 2px solid #dfe6e9;
+            border-radius: 10px;
             overflow: hidden;
-            transition: all 0.3s;
-        }
-
-        .copy-box:focus-within {
-            border-color: #6c5ce7;
-            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+            margin-top: 10px;
         }
 
         .copy-box input {
             flex: 1;
-            padding: 12px 15px;
             border: none;
+            padding: 12px;
             background: transparent;
-            font-size: 0.95rem;
-            color: #555;
+            font-family: monospace;
+            color: #2d3436;
             outline: none;
-            font-family: monospace; /* For better code readability */
         }
 
         .copy-btn {
@@ -111,36 +109,80 @@
             padding: 0 20px;
             cursor: pointer;
             font-weight: 600;
-            transition: background 0.3s;
         }
 
-        .copy-btn:hover {
-            background: #5f3dc4;
+        /* Team Levels */
+        .level-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        .copy-btn:active {
-            transform: scale(0.95);
+        .level-card {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
-        /* Back Button */
-        .back-btn {
-            display: inline-block;
-            margin-top: 1rem;
-            color: #6c5ce7;
-            text-decoration: none;
+        .level-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .lvl-1 { background: linear-gradient(135deg, #00b894, #00cec9); }
+        .lvl-2 { background: linear-gradient(135deg, #0984e3, #74b9ff); }
+        .lvl-3 { background: linear-gradient(135deg, #fdcb6e, #ffeaa7); }
+
+        .level-info {
+            flex-grow: 1;
+        }
+
+        .level-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #2d3436;
+        }
+
+        .level-desc {
+            font-size: 0.8rem;
+            color: #636e72;
+        }
+
+        .level-stat {
+            text-align: right;
+        }
+
+        .member-count {
+            display: block;
+            font-weight: 700;
+            color: #2d3436;
+        }
+
+        .profit-text {
+            font-size: 0.75rem;
+            color: #00b894;
             font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.2s;
         }
 
-        .back-btn:hover {
-            color: #4834d4;
-            text-decoration: underline;
-        }
-
-        .loading {
-            color: #888;
-            font-style: italic;
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            opacity: 0.9;
         }
 
     </style>
@@ -148,42 +190,93 @@
 <body>
 
     <div class="container">
-        <div class="header-icon">
-            <i class="fas fa-gift"></i>
-        </div>
-        <h2>Refer & Earn</h2>
-        <p>Invite your friends to Art Free Income and earn rewards for every active member!</p>
-
-        <!-- Section 1: Referral Code -->
-        <div class="input-group">
-            <label class="input-label">Your Referral Code</label>
-            <div class="copy-box">
-                <input type="text" id="referral-code" value="Loading..." readonly>
-                <button class="copy-btn" onclick="copyToClipboard('referral-code')">
-                    <i class="far fa-copy"></i> Copy
-                </button>
+        
+        <!-- Header Stats -->
+        <div class="stats-card">
+            <div class="total-team-label">Total Team Members</div>
+            <div class="total-team-count" id="total-team-count">0</div>
+            
+            <div class="grid-stats">
+                <div class="stat-box">
+                    <h4 id="direct-referrals">0</h4>
+                    <p>Direct Referrals</p>
+                </div>
+                <div class="stat-box">
+                    <h4 id="total-commission">0 TC</h4>
+                    <p>Total Income</p>
+                </div>
             </div>
         </div>
 
-        <!-- Section 2: Referral Link -->
-        <div class="input-group">
-            <label class="input-label">Your Referral Link</label>
+        <!-- Copy Link Section -->
+        <div class="invite-card">
+            <h4 style="margin-bottom: 5px; color: #2d3436;">Your Invitation Code</h4>
             <div class="copy-box">
-                <input type="text" id="referral-link" value="Generating link..." readonly>
-                <button class="copy-btn" onclick="copyToClipboard('referral-link')">
-                    <i class="fas fa-link"></i> Copy
-                </button>
+                <input type="text" id="invite-code" value="Loading..." readonly>
+                <button class="copy-btn" onclick="copyCode()">Copy</button>
             </div>
+            <p style="font-size: 0.8rem; color: #b2bec3; margin-top: 8px; text-align: center;">
+                Share this code to earn Level 1 Commission (20 TC per user)
+            </p>
         </div>
 
-        <a href="home.html" class="back-btn">
-            <i class="fas fa-arrow-left"></i> Back to Dashboard
-        </a>
+        <!-- 3 Levels Breakdown -->
+        <div class="level-container">
+            
+            <!-- Level 1 -->
+            <div class="level-card">
+                <div class="level-icon lvl-1">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <div class="level-info">
+                    <div class="level-title">Level 1</div>
+                    <div class="level-desc">Direct Members</div>
+                </div>
+                <div class="level-stat">
+                    <span class="member-count" id="lvl1-count">0</span>
+                    <span class="profit-text">20 TC/User</span>
+                </div>
+            </div>
+
+            <!-- Level 2 -->
+            <div class="level-card">
+                <div class="level-icon lvl-2">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <div class="level-info">
+                    <div class="level-title">Level 2</div>
+                    <div class="level-desc">Team Members</div>
+                </div>
+                <div class="level-stat">
+                    <span class="member-count" id="lvl2-count">0</span>
+                    <span class="profit-text">10 TC/User</span>
+                </div>
+            </div>
+
+            <!-- Level 3 -->
+            <div class="level-card">
+                <div class="level-icon lvl-3">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="level-info">
+                    <div class="level-title">Level 3</div>
+                    <div class="level-desc">Affiliate Members</div>
+                </div>
+                <div class="level-stat">
+                    <span class="member-count" id="lvl3-count">0</span>
+                    <span class="profit-text">5 TC/User</span>
+                </div>
+            </div>
+
+        </div>
+
+        <a href="home.html" class="home-link">Back to Dashboard</a>
     </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -198,39 +291,110 @@
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const database = firebase.database();
 
-        // Base URL provided by you
-        const baseURL = "https://art-community-download.github.io/web-site/login_register.html";
+        // --- Configuration: Referral Rewards ---
+        const REWARD_L1 = 20; // 20 Coins for Direct Referrals
+
+        let currentUser = null;
 
         auth.onAuthStateChanged(user => {
             if (user) {
-                const uid = user.uid;
+                currentUser = user;
+                document.getElementById('invite-code').value = user.uid;
                 
-                // Set Code
-                document.getElementById('referral-code').value = uid;
-                
-                // Set Link (Adding ?ref=UID)
-                const fullLink = `${baseURL}?ref=${uid}`;
-                document.getElementById('referral-link').value = fullLink;
+                // 1. Process Retroactive Payments (আগের রেফারেলের টাকা অ্যাড করা)
+                processMissedRewards(user.uid);
 
+                // 2. Calculate Team Size (3 Levels)
+                calculateTeamData(user.uid);
             } else {
                 window.location.href = 'login_register.html';
             }
         });
 
-        function copyToClipboard(elementId) {
-            const copyText = document.getElementById(elementId);
+        // --- Function: Retroactive Payment Logic ---
+        function processMissedRewards(uid) {
+            const userRef = database.ref('users/' + uid);
             
-            // Select the text field
-            copyText.select();
-            copyText.setSelectionRange(0, 99999); // For mobile devices
-
-            // Copy the text inside the text field
-            navigator.clipboard.writeText(copyText.value).then(() => {
-                alert("Copied to clipboard!");
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
+            userRef.transaction((userData) => {
+                if (userData) {
+                    const currentRefs = userData.referralCount || 0;
+                    const paidRefs = userData.paidReferralCount || 0; // আগে কতজনের টাকা পেয়েছে
+                    
+                    if (currentRefs > paidRefs) {
+                        // পার্থক্য বের করা (যাদের টাকা পায়নি)
+                        const unpaidCount = currentRefs - paidRefs;
+                        const bonusAmount = unpaidCount * REWARD_L1;
+                        
+                        // ব্যালেন্স আপডেট
+                        userData.balance = (userData.balance || 0) + bonusAmount;
+                        
+                        // Paid count আপডেট করা যাতে আর টাকা না পায়
+                        userData.paidReferralCount = currentRefs;
+                        
+                        alert(`System Update: You had ${unpaidCount} unpaid referrals from before. Added ${bonusAmount} TC to your balance!`);
+                    }
+                }
+                return userData;
             });
+        }
+
+        // --- Function: Calculate 3 Levels Team ---
+        function calculateTeamData(uid) {
+            // Note: For large apps, use Cloud Functions. For this, we fetch users client-side.
+            database.ref('users').once('value').then(snapshot => {
+                const allUsers = snapshot.val();
+                if (!allUsers) return;
+
+                let lvl1 = [], lvl2 = [], lvl3 = [];
+
+                // Find Level 1 (Direct)
+                for (let key in allUsers) {
+                    if (allUsers[key].usedInvitationCode === uid) {
+                        lvl1.push(key);
+                    }
+                }
+
+                // Find Level 2 (Referred by Level 1)
+                if (lvl1.length > 0) {
+                    for (let key in allUsers) {
+                        if (lvl1.includes(allUsers[key].usedInvitationCode)) {
+                            lvl2.push(key);
+                        }
+                    }
+                }
+
+                // Find Level 3 (Referred by Level 2)
+                if (lvl2.length > 0) {
+                    for (let key in allUsers) {
+                        if (lvl2.includes(allUsers[key].usedInvitationCode)) {
+                            lvl3.push(key);
+                        }
+                    }
+                }
+
+                // Update UI
+                document.getElementById('lvl1-count').innerText = lvl1.length;
+                document.getElementById('lvl2-count').innerText = lvl2.length;
+                document.getElementById('lvl3-count').innerText = lvl3.length;
+                
+                document.getElementById('direct-referrals').innerText = lvl1.length;
+                document.getElementById('total-team-count').innerText = lvl1.length + lvl2.length + lvl3.length;
+                
+                // Calculate Total Estimated Income (Just for display)
+                // Assuming L1=20, L2=10, L3=5
+                const totalIncome = (lvl1.length * 20) + (lvl2.length * 10) + (lvl3.length * 5);
+                document.getElementById('total-commission').innerText = totalIncome + " TC";
+
+            });
+        }
+
+        function copyCode() {
+            const code = document.getElementById('invite-code');
+            code.select();
+            document.execCommand("copy");
+            alert("Code copied!");
         }
     </script>
 

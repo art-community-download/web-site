@@ -18,65 +18,93 @@
             background-color: white;
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            width: 100%;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            width: 90%;
             max-width: 400px;
         }
         h2 {
             text-align: center;
-            color: #333;
+            color: #1a1a1a;
             margin-bottom: 1.5rem;
+            font-size: 1.8rem;
         }
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            position: relative;
         }
         label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
+            color: #444;
+            font-size: 0.9rem;
         }
         input[type="text"], input[type="password"] {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ccc;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            box-sizing: border-box; /* Important for padding */
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.2s;
         }
-        .password-container {
-            position: relative;
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        
+        /* --- Eye Icon Styling Updated --- */
+        .password-container input {
+            padding-right: 45px; /* টেক্সট যেন চোখের নিচে না চলে যায় */
         }
         .toggle-password {
             position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
+            right: 12px;
+            top: 38px; /* লেবেল এবং ইনপুটের মাঝখানে এডজাস্টমেন্ট */
             cursor: pointer;
-            color: #888;
+            color: #666;
+            font-size: 1.2rem;
+            user-select: none;
+            background: transparent;
+            border: none;
+            z-index: 10;
         }
+        .toggle-password:hover {
+            color: #007bff;
+        }
+
         button {
             width: 100%;
-            padding: 0.85rem;
+            padding: 0.9rem;
             border: none;
             border-radius: 8px;
             background-color: #007bff;
             color: white;
             font-size: 1rem;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-top: 0.5rem;
         }
         button:hover {
             background-color: #0056b3;
         }
+        button:active {
+            transform: scale(0.98);
+        }
         .toggle-form {
             text-align: center;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
         }
         .toggle-form a {
             color: #007bff;
             cursor: pointer;
             text-decoration: none;
             font-weight: 600;
+        }
+        .toggle-form a:hover {
+            text-decoration: underline;
         }
         #register-form {
             display: none;
@@ -91,16 +119,16 @@
             <h2>Login</h2>
             <div class="form-group">
                 <label for="login-phone">Phone Number</label>
-                <input type="text" id="login-phone" required>
+                <input type="text" id="login-phone" placeholder="Enter phone number" required>
             </div>
             <div class="form-group password-container">
                 <label for="login-password">Password</label>
-                <input type="password" id="login-password" required>
+                <input type="password" id="login-password" placeholder="Enter password" required>
                 <span class="toggle-password" onclick="togglePasswordVisibility('login-password')">👁️</span>
             </div>
             <div class="form-group" style="display: flex; align-items: center;">
                 <input type="checkbox" id="remember-me" style="width: auto; margin-right: 8px;">
-                <label for="remember-me" style="margin-bottom: 0;">Remember Me</label>
+                <label for="remember-me" style="margin-bottom: 0; font-weight: normal;">Remember Me</label>
             </div>
             <button onclick="loginUser()">Login</button>
             <div class="toggle-form">
@@ -113,20 +141,21 @@
             <h2>Register</h2>
             <div class="form-group">
                 <label for="register-phone">Phone Number</label>
-                <input type="text" id="register-phone" required>
+                <input type="text" id="register-phone" placeholder="Enter phone number" required>
             </div>
             <div class="form-group password-container">
                 <label for="register-password">Password</label>
-                <input type="password" id="register-password" required>
+                <input type="password" id="register-password" placeholder="Create password" required>
                  <span class="toggle-password" onclick="togglePasswordVisibility('register-password')">👁️</span>
             </div>
             <div class="form-group">
                 <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" required>
+                <input type="password" id="confirm-password" placeholder="Confirm password" required>
             </div>
+            <!-- Invitation Code is Optional -->
             <div class="form-group">
-                <label for="invitation-code">Invitation Code (Required)</label>
-                <input type="text" id="invitation-code" required>
+                <label for="invitation-code">Invitation Code (Optional)</label>
+                <input type="text" id="invitation-code" placeholder="Enter code if you have one">
             </div>
             <button onclick="registerUser()">Register</button>
             <div class="toggle-form">
@@ -141,14 +170,15 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
 
     <script>
+        // Updated Configuration provided by you
         const firebaseConfig = {
-            apiKey: "AIzaSyA-6c8nN8TUj9V8km-NAVkjgoIeQ5m7_ms",
-            authDomain: "art-732d1.firebaseapp.com",
-            databaseURL: "https://art-732d1-default-rtdb.firebaseio.com",
-            projectId: "art-732d1",
-            storageBucket: "art-732d1.appspot.com",
-            messagingSenderId: "901862985233",
-            appId: "1:901862985233:web:ddfd6b7c8a57c65ef0ebb0"
+          apiKey: "AIzaSyA-6c8nN8TUj9V8km-NAVkjgoIeQ5m7_ms",
+          authDomain: "art-732d1.firebaseapp.com",
+          databaseURL: "https://art-732d1-default-rtdb.firebaseio.com",
+          projectId: "art-732d1",
+          storageBucket: "art-732d1.firebasestorage.app",
+          messagingSenderId: "901862985233",
+          appId: "1:901862985233:web:ddfd6b7c8a57c65ef0ebb0"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -174,15 +204,15 @@
             }
         }
 
-        // --- Updated Registration Logic ---
+        // --- Registration Logic (Referral Optional) ---
         function registerUser() {
             const phone = document.getElementById('register-phone').value;
             const password = document.getElementById('register-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
-            const invitationCode = document.getElementById('invitation-code').value.trim(); // This is the referrer's UID
+            const invitationCode = document.getElementById('invitation-code').value.trim();
 
-            if (!phone || !password || !invitationCode) {
-                alert("Please fill in all required fields.");
+            if (!phone || !password) {
+                alert("Please fill in phone and password.");
                 return;
             }
             if (password.length < 6) {
@@ -194,46 +224,63 @@
                 return;
             }
 
-            // Step 1: Check if the invitation code (referrer's UID) is valid
-            database.ref('users/' + invitationCode).once('value').then(snapshot => {
-                if (!snapshot.exists()) {
-                    alert("Invalid Invitation Code. Please check the code and try again.");
-                    return;
-                }
+            // Scenario 1: No invitation code provided
+            if (invitationCode === "") {
+                createFirebaseUser(phone, password, null);
+            } 
+            // Scenario 2: Invitation code provided
+            else {
+                database.ref('users/' + invitationCode).once('value').then(snapshot => {
+                    if (!snapshot.exists()) {
+                        alert("Invalid Invitation Code. Please remove it or enter a valid one.");
+                        return;
+                    }
+                    // Code valid, proceed
+                    createFirebaseUser(phone, password, invitationCode);
+                }).catch(error => {
+                    alert("Error checking code: " + error.message);
+                });
+            }
+        }
 
-                // Step 2: If code is valid, proceed with creating the new user
-                const email = phone + "@artfreeincome.com";
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        const newUser = userCredential.user;
-                        
-                        // Step 3: Save the new user's data
-                        database.ref('users/' + newUser.uid).set({
-                            phone: phone,
-                            uid: newUser.uid,
-                            balance: 0,
-                            referralCount: 0, // New users start with 0 referrals
-                            usedInvitationCode: invitationCode, // Store who referred them
-                            createdAt: new Date().toISOString()
-                        });
+        // Helper function to create user
+        function createFirebaseUser(phone, password, referrerUid) {
+            const email = phone + "@artfreeincome.com";
 
-                        // Step 4: Increment the referrer's referralCount using a transaction
-                        const referrerRef = database.ref('users/' + invitationCode + '/referralCount');
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const newUser = userCredential.user;
+                    
+                    const userData = {
+                        phone: phone,
+                        uid: newUser.uid,
+                        balance: 0,
+                        referralCount: 0,
+                        createdAt: new Date().toISOString()
+                    };
+
+                    // If there was a referrer, save who it was
+                    if (referrerUid) {
+                        userData.usedInvitationCode = referrerUid;
+                    }
+
+                    // Step 1: Save new user data
+                    database.ref('users/' + newUser.uid).set(userData);
+
+                    // Step 2: If referrer exists, update their count
+                    if (referrerUid) {
+                        const referrerRef = database.ref('users/' + referrerUid + '/referralCount');
                         referrerRef.transaction(currentCount => {
                             return (currentCount || 0) + 1;
                         });
+                    }
 
-                        alert("Registration successful! Please login.");
-                        showLoginForm();
-                    })
-                    .catch((error) => {
-                        // Handle errors like "email-already-in-use"
-                        alert("Registration Error: " + error.message);
-                    });
-
-            }).catch(error => {
-                alert("Error validating invitation code: " + error.message);
-            });
+                    alert("Registration successful! Please login.");
+                    showLoginForm();
+                })
+                .catch((error) => {
+                    alert("Registration Error: " + error.message);
+                });
         }
 
         // --- Login Logic ---

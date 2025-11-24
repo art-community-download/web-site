@@ -4,173 +4,350 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account - Art Free Income</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
         }
+
         .container {
-            max-width: 600px;
-            margin: auto;
+            width: 100%;
+            max-width: 500px;
+            padding-bottom: 50px;
         }
-        .card {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 1.5rem;
-        }
-        .card-header {
+
+        /* Profile Header Card */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px 20px;
             text-align: center;
-            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+            position: relative;
         }
-        .card-header h2 {
-            margin: 0;
-            color: #333;
+
+        /* Profile Pic Styling */
+        .avatar-container {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 15px auto;
+            cursor: pointer;
         }
-        .info-item {
+
+        .profile-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+            object-fit: cover;
+            background-color: #e3f2fd;
+        }
+
+        .camera-icon {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #6c5ce7;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            font-size: 1rem;
-            color: #555;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #eee;
+            justify-content: center;
+            font-size: 0.9rem;
+            border: 2px solid white;
+            transition: transform 0.2s;
         }
-        .info-item:last-child {
+
+        .avatar-container:hover .camera-icon {
+            transform: scale(1.1);
+        }
+
+        /* Name Input Styling */
+        .name-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .name-input {
+            border: none;
+            background: transparent;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2d3436;
+            text-align: center;
+            width: 70%;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-bottom: 2px solid #6c5ce7;
+        }
+
+        .edit-icon {
+            color: #b2bec3;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .user-phone {
+            font-size: 0.9rem;
+            color: #636e72;
+            margin-bottom: 10px;
+        }
+
+        .uid-badge {
+            display: inline-flex;
+            align-items: center;
+            background: #f1f2f6;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #636e72;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 20px;
+        }
+
+        /* Balance Section */
+        .balance-info {
+            background: linear-gradient(to right, #6c5ce7, #a29bfe);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .balance-amount {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        /* Menu List Styling */
+        .menu-list {
+            background: white;
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid #f1f2f6;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-radius: 10px;
+        }
+
+        .menu-item:last-child {
             border-bottom: none;
         }
-        .info-item .icon {
-            font-size: 1.2rem;
-            margin-right: 1rem;
-            width: 24px;
-            text-align: center;
+
+        .menu-item:hover {
+            background: #f8f9fa;
         }
-        .info-item strong {
-            color: #333;
-        }
-        .uid-container {
+
+        .menu-left {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            width: 100%;
+            gap: 15px;
+            font-weight: 500;
+            color: #2d3436;
         }
-        .copy-btn {
-            background-color: #e9ecef;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-        .copy-btn:hover {
-            background-color: #dcdfe2;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: #444;
-        }
-        input[type="password"] {
-            width: 95%;
-            padding: 0.75rem;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        .btn {
-            width: 100%;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
+
+        .menu-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            background-color: #007bff;
-            transition: background-color 0.3s;
         }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        .btn-logout {
-            background-color: #dc3545;
-        }
-        .btn-logout:hover {
-            background-color: #c82333;
-        }
-        .language-toggle {
-            display: flex;
-            justify-content: space-between;
+
+        /* About Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
             align-items: center;
+            justify-content: center;
         }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            animation: popUp 0.3s ease-out;
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            background: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        /* Action Buttons */
+        .logout-btn {
+            width: 100%;
+            padding: 15px;
+            background: #ff7675;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 118, 117, 0.3);
+        }
+
         .home-link {
             display: block;
             text-align: center;
-            margin-top: 1rem;
-            color: #007bff;
+            margin-top: 20px;
+            color: white;
             text-decoration: none;
-            font-weight: bold;
+            opacity: 0.9;
         }
+
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Profile Info Card -->
-        <div class="card">
-            <div class="card-header">
-                <h2>My Profile</h2>
-            </div>
-            <div class="info-item">
-                <span class="icon">📱</span>
-                <strong>Phone:</strong>&nbsp;<span id="user-phone">Loading...</span>
-            </div>
-            <div class="info-item">
-                <span class="icon">🆔</span>
-                <div class="uid-container">
-                    <span><strong>UID:</strong>&nbsp;<span id="user-uid">Loading...</span></span>
-                    <button class="copy-btn" onclick="copyUID()">Copy</button>
+        
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <!-- Profile Picture with Upload -->
+            <div class="avatar-container" onclick="document.getElementById('file-upload').click()">
+                <img src="https://via.placeholder.com/150" id="profile-img" class="profile-avatar" alt="Profile">
+                <div class="camera-icon">
+                    <i class="fas fa-camera"></i>
                 </div>
             </div>
-            <div class="info-item">
-                <span class="icon">💰</span>
-                <strong>Balance:</strong>&nbsp;৳<span id="user-balance">0.00</span>
+            <!-- Hidden File Input -->
+            <input type="file" id="file-upload" accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
+
+            <!-- Editable Name -->
+            <div class="name-container">
+                <input type="text" id="user-name" class="name-input" placeholder="Set Name" onblur="saveName()">
+                <i class="fas fa-pen edit-icon" onclick="document.getElementById('user-name').focus()"></i>
+            </div>
+            
+            <div class="user-phone" id="user-phone">Loading...</div>
+
+            <div class="uid-badge" onclick="copyUID()">
+                UID: <span id="user-uid">...</span>
+                <i class="far fa-copy" style="margin-left:5px;"></i>
+            </div>
+
+            <div class="balance-info">
+                <span>Total Balance</span>
+                <div class="balance-amount">
+                    <i class="fas fa-coins" style="color: #f1c40f;"></i>
+                    <span id="user-balance">0.00</span> TC
+                </div>
             </div>
         </div>
 
-        <!-- Settings Card -->
-        <div class="card">
-            <div class="card-header">
-                <h2>Settings</h2>
-            </div>
-            <div class="password-change">
-                <h4>Change Password</h4>
-                <div class="form-group">
-                    <label for="new-password">New Password</label>
-                    <input type="password" id="new-password" placeholder="Enter new password">
+        <!-- Menu Options -->
+        <div class="menu-list">
+            
+            <!-- Change Password -->
+            <div class="menu-item" onclick="togglePasswordSection()">
+                <div class="menu-left">
+                    <div class="menu-icon" style="background: #a29bfe;">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    Change Password
                 </div>
-                <div class="form-group">
-                    <label for="confirm-password">Confirm New Password</label>
-                    <input type="password" id="confirm-password" placeholder="Confirm new password">
+                <i class="fas fa-chevron-right" style="color: #ccc;"></i>
+            </div>
+
+            <!-- Password Form (Hidden by default) -->
+            <div id="password-section" style="display:none; padding: 15px; border-bottom: 1px solid #f1f2f6;">
+                <input type="password" id="new-password" placeholder="New Password" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                <input type="password" id="confirm-password" placeholder="Confirm Password" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                <button onclick="changePassword()" style="width: 100%; padding: 10px; background: #2d3436; color: white; border: none; border-radius: 8px; cursor: pointer;">Update</button>
+            </div>
+
+            <!-- About Option -->
+            <div class="menu-item" onclick="openAboutModal()">
+                <div class="menu-left">
+                    <div class="menu-icon" style="background: #74b9ff;">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    About Us
                 </div>
-                <button class="btn" onclick="changePassword()">Update Password</button>
+                <i class="fas fa-chevron-right" style="color: #ccc;"></i>
             </div>
-            <hr style="border: 1px solid #eee; margin: 2rem 0;">
-            <div class="language-toggle">
-                <h4>Language</h4>
-                <span>English / বাংলা</span>
-            </div>
+
         </div>
 
-        <!-- Actions Card -->
-        <div class="card">
-            <button class="btn btn-logout" onclick="logout()">Logout</button>
-            <a href="home.html" class="home-link">Back to Home</a>
+        <button class="logout-btn" onclick="logout()">Log Out</button>
+        <a href="home.html" class="home-link">Back to Dashboard</a>
+    </div>
+
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: #6c5ce7; margin-bottom: 10px;">About Us</h2>
+            <img src="https://img.icons8.com/color/96/000000/web.png" alt="icon" style="margin-bottom: 10px;">
+            <p style="color: #636e72; line-height: 1.6;">
+                Welcome to <strong>Art Free Income</strong>.<br>
+                We provide the best platform to earn money by completing simple tasks, playing games, and referring friends.<br><br>
+                Version: 1.0.0
+            </p>
+            <button class="close-btn" onclick="closeAboutModal()">Close</button>
         </div>
     </div>
 
@@ -199,12 +376,26 @@
             if (user) {
                 currentUser = user;
                 document.getElementById('user-uid').innerText = user.uid;
+                
                 const userRef = database.ref('users/' + user.uid);
                 userRef.on('value', (snapshot) => {
                     const data = snapshot.val();
                     if (data) {
-                        document.getElementById('user-phone').innerText = data.phone;
+                        document.getElementById('user-phone').innerText = data.phone || "No Phone";
                         document.getElementById('user-balance').innerText = (data.balance || 0).toFixed(2);
+                        
+                        // Set Name if exists
+                        if (data.name) {
+                            document.getElementById('user-name').value = data.name;
+                        }
+
+                        // Set Profile Pic if exists
+                        if (data.profilePic) {
+                            document.getElementById('profile-img').src = data.profilePic;
+                        } else {
+                             // Default Avatar
+                             document.getElementById('profile-img').src = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
+                        }
                     }
                 });
             } else {
@@ -212,10 +403,66 @@
             }
         });
 
+        // --- Save Name Function ---
+        function saveName() {
+            const name = document.getElementById('user-name').value.trim();
+            if(currentUser && name) {
+                database.ref('users/' + currentUser.uid).update({
+                    name: name
+                });
+            }
+        }
+
+        // --- Handle Image Upload (Base64) ---
+        // Note: For large scale apps, use Firebase Storage. 
+        // Here we use Base64 string in Realtime DB for simplicity as requested.
+        function handleImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                
+                // Limit file size to 100KB to prevent Database clutter
+                if(file.size > 100000) {
+                    alert("Image too large! Please select an image smaller than 100KB.");
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const base64String = e.target.result;
+                    // Update UI immediately
+                    document.getElementById('profile-img').src = base64String;
+                    
+                    // Save to Database
+                    if (currentUser) {
+                        database.ref('users/' + currentUser.uid).update({
+                            profilePic: base64String
+                        });
+                    }
+                }
+
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // --- Modal & Utility Functions ---
+        function openAboutModal() {
+            document.getElementById('aboutModal').style.display = 'flex';
+        }
+
+        function closeAboutModal() {
+            document.getElementById('aboutModal').style.display = 'none';
+        }
+
+        function togglePasswordSection() {
+            const section = document.getElementById('password-section');
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        }
+
         function copyUID() {
             const uid = document.getElementById('user-uid').innerText;
             navigator.clipboard.writeText(uid).then(() => {
-                alert('User ID copied to clipboard!');
+                alert('UID Copied!');
             }).catch(err => {
                 alert('Failed to copy ID.');
             });
@@ -226,11 +473,11 @@
             const confirmPassword = document.getElementById('confirm-password').value;
 
             if (newPassword.length < 6) {
-                alert("Password should be at least 6 characters long.");
+                alert("Password must be at least 6 characters.");
                 return;
             }
             if (newPassword !== confirmPassword) {
-                alert("Passwords do not match. Please try again.");
+                alert("Passwords do not match.");
                 return;
             }
 
@@ -238,17 +485,20 @@
                 alert("Password updated successfully!");
                 document.getElementById('new-password').value = '';
                 document.getElementById('confirm-password').value = '';
+                togglePasswordSection(); // hide after success
             }).catch((error) => {
-                alert("Error updating password: " + error.message);
+                alert("Error: " + error.message);
             });
         }
 
         function logout() {
-            auth.signOut().then(() => {
-                window.location.href = 'login_register.html';
-            }).catch((error) => {
-                alert("Logout Error: " + error.message);
-            });
+            if(confirm("Are you sure you want to log out?")){
+                auth.signOut().then(() => {
+                    window.location.href = 'login_register.html';
+                }).catch((error) => {
+                    alert("Logout Error: " + error.message);
+                });
+            }
         }
     </script>
 

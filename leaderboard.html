@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - Art Free Income</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3436;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: 30px;
+        }
+
+        /* Header */
+        .header-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trophy-icon {
+            font-size: 3rem;
+            color: #f1c40f;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .header-card h2 {
+            font-weight: 700;
+            color: #2d3436;
+        }
+
+        .header-card p {
+            color: #636e72;
+            font-size: 0.9rem;
+        }
+
+        /* List Styling */
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .user-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .user-card:hover {
+            transform: scale(1.02);
+        }
+
+        /* Rank Badge */
+        .rank-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        /* Colors for Top 3 */
+        .rank-1 { background: linear-gradient(135deg, #ffd700, #f1c40f); color: white; box-shadow: 0 4px 10px rgba(241, 196, 15, 0.4); }
+        .rank-2 { background: linear-gradient(135deg, #dcdde1, #b2bec3); color: white; box-shadow: 0 4px 10px rgba(178, 190, 195, 0.4); }
+        .rank-3 { background: linear-gradient(135deg, #e17055, #d35400); color: white; box-shadow: 0 4px 10px rgba(211, 84, 0, 0.4); }
+        .rank-normal { background: #f1f2f6; color: #636e72; }
+
+        /* User Info */
+        .user-info {
+            flex-grow: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #2d3436;
+            font-size: 1rem;
+            display: block;
+        }
+
+        .user-uid {
+            font-size: 0.75rem;
+            color: #b2bec3;
+        }
+
+        /* Stats (Right Side) */
+        .user-stats {
+            text-align: right;
+            min-width: 80px;
+        }
+
+        .ref-count {
+            display: block;
+            font-weight: 700;
+            color: #6c5ce7;
+            font-size: 0.95rem;
+        }
+
+        .balance-count {
+            font-size: 0.75rem;
+            color: #00b894;
+            font-weight: 500;
+        }
+
+        .loading-text {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="header-card">
+            <div class="trophy-icon"><i class="fas fa-trophy"></i></div>
+            <h2>Top 20 Leaders</h2>
+            <p>Highest referrals this season</p>
+        </div>
+
+        <div id="leaderboard-container" class="leaderboard-list">
+            <div class="loading-text">Loading Data...</div>
+        </div>
+
+        <a href="home.html" class="home-link">Back to Dashboard</a>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-6c8nN8TUj9V8km-NAVkjgoIeQ5m7_ms",
+            authDomain: "art-732d1.firebaseapp.com",
+            databaseURL: "https://art-732d1-default-rtdb.firebaseio.com",
+            projectId: "art-732d1",
+            storageBucket: "art-732d1.appspot.com",
+            messagingSenderId: "901862985233",
+            appId: "1:901862985233:web:ddfd6b7c8a57c65ef0ebb0"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Load Leaderboard Data
+        window.onload = function() {
+            loadLeaderboard();
+        };
+
+        function loadLeaderboard() {
+            const usersRef = database.ref('users');
+            
+            // Query: Order by referralCount, take the top 20
+            usersRef.orderByChild('referralCount').limitToLast(20).once('value')
+                .then(snapshot => {
+                    const container = document.getElementById('leaderboard-container');
+                    container.innerHTML = ""; // Clear loader
+                    
+                    let usersArray = [];
+
+                    // Convert snapshot object to array
+                    snapshot.forEach(childSnapshot => {
+                        usersArray.push(childSnapshot.val());
+                    });
+
+                    // Firebase sorting is Ascending (Low to High), so we Reverse it
+                    usersArray.reverse();
+
+                    if (usersArray.length === 0) {
+                        container.innerHTML = "<div class='loading-text'>No users found.</div>";
+                        return;
+                    }
+
+                    // Loop through Top 20 users and display
+                    usersArray.forEach((user, index) => {
+                        const rank = index + 1;
+                        const displayName = getDisplayName(user);
+                        const referrals = user.referralCount || 0;
+                        const balance = (user.balance || 0).toFixed(2);
+                        
+                        // Determine Rank Style
+                        let rankClass = 'rank-normal';
+                        let rankContent = rank;
+                        
+                        if(rank === 1) { 
+                            rankClass = 'rank-1'; 
+                            rankContent = '<i class="fas fa-crown"></i>'; 
+                        } else if(rank === 2) { 
+                            rankClass = 'rank-2'; 
+                        } else if(rank === 3) { 
+                            rankClass = 'rank-3'; 
+                        }
+
+                        const cardHtml = `
+                            <div class="user-card">
+                                <div class="rank-box ${rankClass}">${rankContent}</div>
+                                <div class="user-info">
+                                    <span class="user-name">${displayName}</span>
+                                    <span class="user-uid">Rank #${rank}</span>
+                                </div>
+                                <div class="user-stats">
+                                    <span class="ref-count">${referrals} Refs</span>
+                                    <span class="balance-count">৳${balance}</span>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += cardHtml;
+                    });
+                })
+                .catch(error => {
+                    console.error("Error loading leaderboard:", error);
+                    document.getElementById('leaderboard-container').innerHTML = "<div class='loading-text'>Error loading data.</div>";
+                });
+        }
+
+        // Helper: Mask the User ID or show Name
+        function getDisplayName(user) {
+            if (user.name && user.name.trim() !== "") {
+                return user.name; // Return Name if exists
+            } else {
+                // Mask UID: First 4 chars + *** + Last 3 chars
+                const uid = user.uid;
+                if(uid && uid.length > 8) {
+                    return uid.substring(0, 4) + "****" + uid.substring(uid.length - 3);
+                }
+                return "Unknown User";
+            }
+        }
+    </script>
+
+</body>
+</html>

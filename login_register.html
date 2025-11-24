@@ -303,6 +303,24 @@
             }
         }
 
+        // --- Handle Referral Link Logic ---
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // URL থেকে প্যারামিটার চেক করা
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            
+            if (refCode) {
+                // যদি লিংকে ref কোড থাকে, রেজিস্টার ফর্ম অটোমেটিক ওপেন হবে
+                showRegisterForm();
+                
+                // ইনভাইটেশন কোড ইনপুটে ভ্যালু বসিয়ে দেওয়া হবে
+                const inviteInput = document.getElementById('invitation-code');
+                if (inviteInput) {
+                    inviteInput.value = refCode;
+                }
+            }
+        });
+
         // --- Registration Logic (Referral Optional) ---
         function registerUser() {
             const phone = document.getElementById('register-phone').value;
@@ -340,7 +358,6 @@
 
         function createFirebaseUser(phone, password, referrerUid) {
             const email = phone + "@artfreeincome.com";
-            // Show loading state (optional UI improvement could go here)
             
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {

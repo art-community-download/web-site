@@ -41,18 +41,22 @@
             text-align: center;
         }
 
-        .total-team-label {
+        .income-label {
             font-size: 0.9rem;
             color: #636e72;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .total-team-count {
+        .total-income {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #6c5ce7;
+            color: #00b894; /* Green for money */
             margin: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .grid-stats {
@@ -65,7 +69,7 @@
         }
 
         .stat-box h4 {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: #2d3436;
         }
 
@@ -74,13 +78,23 @@
             color: #b2bec3;
         }
 
-        /* Invite Link Section */
-        .invite-card {
+        /* Copy Section Style */
+        .share-card {
             background: white;
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2d3436;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .copy-box {
@@ -89,7 +103,7 @@
             border: 2px solid #dfe6e9;
             border-radius: 10px;
             overflow: hidden;
-            margin-top: 10px;
+            margin-bottom: 15px;
         }
 
         .copy-box input {
@@ -98,8 +112,9 @@
             padding: 12px;
             background: transparent;
             font-family: monospace;
-            color: #2d3436;
+            color: #555;
             outline: none;
+            font-size: 0.9rem;
         }
 
         .copy-btn {
@@ -109,6 +124,11 @@
             padding: 0 20px;
             cursor: pointer;
             font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #5f3dc4;
         }
 
         /* Team Levels */
@@ -167,6 +187,7 @@
             display: block;
             font-weight: 700;
             color: #2d3436;
+            font-size: 1.1rem;
         }
 
         .profit-text {
@@ -193,31 +214,41 @@
         
         <!-- Header Stats -->
         <div class="stats-card">
-            <div class="total-team-label">Total Team Members</div>
-            <div class="total-team-count" id="total-team-count">0</div>
+            <div class="income-label">Total Referral Income</div>
+            <div class="total-income">
+                <i class="fas fa-coins"></i>
+                <span id="display-total-income">0</span>
+            </div>
             
             <div class="grid-stats">
                 <div class="stat-box">
-                    <h4 id="direct-referrals">0</h4>
-                    <p>Direct Referrals</p>
+                    <h4 id="display-total-team">0</h4>
+                    <p>Total Team Members</p>
                 </div>
                 <div class="stat-box">
-                    <h4 id="total-commission">0 TC</h4>
-                    <p>Total Income</p>
+                    <h4 id="display-direct-ref">0</h4>
+                    <p>Direct Referrals</p>
                 </div>
             </div>
         </div>
 
-        <!-- Copy Link Section -->
-        <div class="invite-card">
-            <h4 style="margin-bottom: 5px; color: #2d3436;">Your Invitation Code</h4>
+        <!-- Share Section -->
+        <div class="share-card">
+            
+            <!-- Referral Link -->
+            <div class="section-title"><i class="fas fa-link"></i> Registration Link</div>
             <div class="copy-box">
-                <input type="text" id="invite-code" value="Loading..." readonly>
-                <button class="copy-btn" onclick="copyCode()">Copy</button>
+                <input type="text" id="ref-link" value="Generating..." readonly>
+                <button class="copy-btn" onclick="copyToClipboard('ref-link')">Copy</button>
             </div>
-            <p style="font-size: 0.8rem; color: #b2bec3; margin-top: 8px; text-align: center;">
-                Share this code to earn Level 1 Commission (20 TC per user)
-            </p>
+
+            <!-- Referral Code -->
+            <div class="section-title"><i class="fas fa-key"></i> Invitation Code</div>
+            <div class="copy-box" style="margin-bottom: 0;">
+                <input type="text" id="ref-code" value="Loading..." readonly>
+                <button class="copy-btn" onclick="copyToClipboard('ref-code')">Copy</button>
+            </div>
+
         </div>
 
         <!-- 3 Levels Breakdown -->
@@ -230,11 +261,11 @@
                 </div>
                 <div class="level-info">
                     <div class="level-title">Level 1</div>
-                    <div class="level-desc">Direct Members</div>
+                    <div class="level-desc">Direct Referral</div>
                 </div>
                 <div class="level-stat">
-                    <span class="member-count" id="lvl1-count">0</span>
-                    <span class="profit-text">20 TC/User</span>
+                    <span class="member-count" id="count-l1">0</span>
+                    <span class="profit-text">+20 Coins/User</span>
                 </div>
             </div>
 
@@ -245,11 +276,11 @@
                 </div>
                 <div class="level-info">
                     <div class="level-title">Level 2</div>
-                    <div class="level-desc">Team Members</div>
+                    <div class="level-desc">Team Referral</div>
                 </div>
                 <div class="level-stat">
-                    <span class="member-count" id="lvl2-count">0</span>
-                    <span class="profit-text">10 TC/User</span>
+                    <span class="member-count" id="count-l2">0</span>
+                    <span class="profit-text">+10 Coins/User</span>
                 </div>
             </div>
 
@@ -260,11 +291,11 @@
                 </div>
                 <div class="level-info">
                     <div class="level-title">Level 3</div>
-                    <div class="level-desc">Affiliate Members</div>
+                    <div class="level-desc">Affiliate Member</div>
                 </div>
                 <div class="level-stat">
-                    <span class="member-count" id="lvl3-count">0</span>
-                    <span class="profit-text">5 TC/User</span>
+                    <span class="member-count" id="count-l3">0</span>
+                    <span class="profit-text">+5 Coins/User</span>
                 </div>
             </div>
 
@@ -293,108 +324,119 @@
         const auth = firebase.auth();
         const database = firebase.database();
 
-        // --- Configuration: Referral Rewards ---
-        const REWARD_L1 = 20; // 20 Coins for Direct Referrals
-
-        let currentUser = null;
+        // --- Base URL ---
+        const baseURL = "https://art-community-download.github.io/web-site/login_register.html";
 
         auth.onAuthStateChanged(user => {
             if (user) {
-                currentUser = user;
-                document.getElementById('invite-code').value = user.uid;
+                // 1. Set Invite Code
+                document.getElementById('ref-code').value = user.uid;
                 
-                // 1. Process Retroactive Payments (আগের রেফারেলের টাকা অ্যাড করা)
-                processMissedRewards(user.uid);
-
-                // 2. Calculate Team Size (3 Levels)
-                calculateTeamData(user.uid);
+                // 2. Set Registration Link
+                document.getElementById('ref-link').value = `${baseURL}?ref=${user.uid}`;
+                
+                // 3. Calculate Team & Earnings
+                calculateTeamAndPay(user.uid);
             } else {
                 window.location.href = 'login_register.html';
             }
         });
 
-        // --- Function: Retroactive Payment Logic ---
-        function processMissedRewards(uid) {
-            const userRef = database.ref('users/' + uid);
-            
-            userRef.transaction((userData) => {
-                if (userData) {
-                    const currentRefs = userData.referralCount || 0;
-                    const paidRefs = userData.paidReferralCount || 0; // আগে কতজনের টাকা পেয়েছে
-                    
-                    if (currentRefs > paidRefs) {
-                        // পার্থক্য বের করা (যাদের টাকা পায়নি)
-                        const unpaidCount = currentRefs - paidRefs;
-                        const bonusAmount = unpaidCount * REWARD_L1;
-                        
-                        // ব্যালেন্স আপডেট
-                        userData.balance = (userData.balance || 0) + bonusAmount;
-                        
-                        // Paid count আপডেট করা যাতে আর টাকা না পায়
-                        userData.paidReferralCount = currentRefs;
-                        
-                        alert(`System Update: You had ${unpaidCount} unpaid referrals from before. Added ${bonusAmount} TC to your balance!`);
-                    }
-                }
-                return userData;
-            });
-        }
-
-        // --- Function: Calculate 3 Levels Team ---
-        function calculateTeamData(uid) {
-            // Note: For large apps, use Cloud Functions. For this, we fetch users client-side.
+        function calculateTeamAndPay(uid) {
+            // Fetch ALL users to calculate tree
             database.ref('users').once('value').then(snapshot => {
                 const allUsers = snapshot.val();
                 if (!allUsers) return;
 
-                let lvl1 = [], lvl2 = [], lvl3 = [];
+                let l1 = [], l2 = [], l3 = [];
 
-                // Find Level 1 (Direct)
+                // --- Find Level 1 ---
                 for (let key in allUsers) {
                     if (allUsers[key].usedInvitationCode === uid) {
-                        lvl1.push(key);
+                        l1.push(key);
                     }
                 }
 
-                // Find Level 2 (Referred by Level 1)
-                if (lvl1.length > 0) {
+                // --- Find Level 2 ---
+                if (l1.length > 0) {
                     for (let key in allUsers) {
-                        if (lvl1.includes(allUsers[key].usedInvitationCode)) {
-                            lvl2.push(key);
+                        if (l1.includes(allUsers[key].usedInvitationCode)) {
+                            l2.push(key);
                         }
                     }
                 }
 
-                // Find Level 3 (Referred by Level 2)
-                if (lvl2.length > 0) {
+                // --- Find Level 3 ---
+                if (l2.length > 0) {
                     for (let key in allUsers) {
-                        if (lvl2.includes(allUsers[key].usedInvitationCode)) {
-                            lvl3.push(key);
+                        if (l2.includes(allUsers[key].usedInvitationCode)) {
+                            l3.push(key);
                         }
                     }
                 }
 
-                // Update UI
-                document.getElementById('lvl1-count').innerText = lvl1.length;
-                document.getElementById('lvl2-count').innerText = lvl2.length;
-                document.getElementById('lvl3-count').innerText = lvl3.length;
+                // --- Calculate Expected Income ---
+                const incomeL1 = l1.length * 20; // 20 Coins
+                const incomeL2 = l2.length * 10; // 10 Coins
+                const incomeL3 = l3.length * 5;  // 5 Coins
                 
-                document.getElementById('direct-referrals').innerText = lvl1.length;
-                document.getElementById('total-team-count').innerText = lvl1.length + lvl2.length + lvl3.length;
+                const totalExpectedIncome = incomeL1 + incomeL2 + incomeL3;
+                const totalTeamSize = l1.length + l2.length + l3.length;
+
+                // --- Update UI ---
+                document.getElementById('count-l1').innerText = l1.length;
+                document.getElementById('count-l2').innerText = l2.length;
+                document.getElementById('count-l3').innerText = l3.length;
                 
-                // Calculate Total Estimated Income (Just for display)
-                // Assuming L1=20, L2=10, L3=5
-                const totalIncome = (lvl1.length * 20) + (lvl2.length * 10) + (lvl3.length * 5);
-                document.getElementById('total-commission').innerText = totalIncome + " TC";
+                document.getElementById('display-direct-ref').innerText = l1.length;
+                document.getElementById('display-total-team').innerText = totalTeamSize;
+                document.getElementById('display-total-income').innerText = totalExpectedIncome;
+
+                // --- AUTO PAY SYSTEM (Retroactive) ---
+                // We check if the user has already been paid for this amount.
+                // If not, we add the difference to their balance.
+                
+                const userRef = database.ref('users/' + uid);
+                
+                userRef.transaction((userData) => {
+                    if (userData) {
+                        // 'referralEarningsPaid' tracks how much coin we already gave them for referrals
+                        const currentPaid = userData.referralEarningsPaid || 0;
+                        
+                        if (totalExpectedIncome > currentPaid) {
+                            const dueAmount = totalExpectedIncome - currentPaid;
+                            
+                            // Add to Balance
+                            userData.balance = (userData.balance || 0) + dueAmount;
+                            
+                            // Update Paid Tracker
+                            userData.referralEarningsPaid = totalExpectedIncome;
+                            
+                            // Also update referralCount for other features (VIP etc)
+                            userData.referralCount = l1.length; 
+
+                            // We can use console log or alert outside transaction
+                            // Note: Alerts inside transaction might repeat if transaction retries
+                        }
+                    }
+                    return userData;
+                }, (error, committed, snapshot) => {
+                    if (committed) {
+                        // Check if balance increased just now
+                        // (This is a simplified check, in production we'd compare snapshots)
+                        // But for user feedback, simply showing the new Total Income is often enough.
+                    }
+                });
 
             });
         }
 
-        function copyCode() {
-            const code = document.getElementById('invite-code');
-            code.select();
+        function copyToClipboard(elementId) {
+            const copyText = document.getElementById(elementId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); 
             document.execCommand("copy");
-            alert("Code copied!");
+            alert("Copied to clipboard!");
         }
     </script>
 

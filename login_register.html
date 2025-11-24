@@ -3,109 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login & Register - Art Free Income</title>
+    <title>Welcome - Art Free Income</title>
+    <!-- Google Fonts for Premium Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f0f2f5;
+            /* Premium Gradient Background */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
         }
+
         .container {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            width: 90%;
-            max-width: 400px;
+            /* Glassmorphism Effect */
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
         }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         h2 {
             text-align: center;
-            color: #1a1a1a;
-            margin-bottom: 1.5rem;
+            color: #2d3436;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
             font-size: 1.8rem;
         }
+
+        .subtitle {
+            text-align: center;
+            color: #636e72;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
         .form-group {
             margin-bottom: 1.2rem;
             position: relative;
         }
+
         label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #444;
+            font-weight: 500;
+            color: #2d3436;
             font-size: 0.9rem;
         }
+
         input[type="text"], input[type="password"] {
             width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-        input[type="text"]:focus, input[type="password"]:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-        
-        /* --- Eye Icon Styling Updated --- */
-        .password-container input {
-            padding-right: 45px; /* টেক্সট যেন চোখের নিচে না চলে যায় */
-        }
-        .toggle-password {
-            position: absolute;
-            right: 12px;
-            top: 38px; /* লেবেল এবং ইনপুটের মাঝখানে এডজাস্টমেন্ট */
-            cursor: pointer;
-            color: #666;
-            font-size: 1.2rem;
-            user-select: none;
-            background: transparent;
-            border: none;
-            z-index: 10;
-        }
-        .toggle-password:hover {
-            color: #007bff;
+            padding: 12px 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
         }
 
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #6c5ce7;
+            background-color: #fff;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1);
+        }
+
+        /* Password Eye Icon Styling */
+        .password-container input {
+            padding-right: 45px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 40px; /* Aligned nicely */
+            cursor: pointer;
+            color: #b2bec3;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .toggle-password:hover {
+            color: #6c5ce7;
+        }
+
+        /* Checkbox Styling */
+        .remember-me-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #6c5ce7; /* Modern browser colored checkbox */
+        }
+
+        .remember-me-label {
+            font-size: 0.9rem;
+            color: #636e72;
+            cursor: pointer;
+        }
+
+        /* Button Styling */
         button {
             width: 100%;
-            padding: 0.9rem;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
-            background-color: #007bff;
+            border-radius: 12px;
+            background: linear-gradient(to right, #6c5ce7, #a29bfe);
             color: white;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
-            margin-top: 0.5rem;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
+
         button:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.6);
+            background: linear-gradient(to right, #5f3dc4, #6c5ce7);
         }
+
         button:active {
-            transform: scale(0.98);
+            transform: translateY(0);
         }
+
+        /* Toggle Form Links */
         .toggle-form {
             text-align: center;
             margin-top: 1.5rem;
             font-size: 0.9rem;
+            color: #636e72;
         }
+
         .toggle-form a {
-            color: #007bff;
+            color: #6c5ce7;
             cursor: pointer;
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.2s;
         }
+
         .toggle-form a:hover {
+            color: #4834d4;
             text-decoration: underline;
         }
+
         #register-form {
             display: none;
         }
@@ -116,50 +184,62 @@
     <div class="container">
         <!-- Login Form -->
         <div id="login-form">
-            <h2>Login</h2>
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Enter your details to access your account</p>
+            
             <div class="form-group">
                 <label for="login-phone">Phone Number</label>
-                <input type="text" id="login-phone" placeholder="Enter phone number" required>
+                <input type="text" id="login-phone" placeholder="e.g. 017xxxxxxxx" required>
             </div>
+            
             <div class="form-group password-container">
                 <label for="login-password">Password</label>
-                <input type="password" id="login-password" placeholder="Enter password" required>
+                <input type="password" id="login-password" placeholder="••••••••" required>
                 <span class="toggle-password" onclick="togglePasswordVisibility('login-password')">👁️</span>
             </div>
-            <div class="form-group" style="display: flex; align-items: center;">
-                <input type="checkbox" id="remember-me" style="width: auto; margin-right: 8px;">
-                <label for="remember-me" style="margin-bottom: 0; font-weight: normal;">Remember Me</label>
+            
+            <div class="remember-me-group">
+                <input type="checkbox" id="remember-me">
+                <label for="remember-me" class="remember-me-label">Remember Me</label>
             </div>
-            <button onclick="loginUser()">Login</button>
+            
+            <button onclick="loginUser()">Sign In</button>
+            
             <div class="toggle-form">
-                <p>Don't have an account? <a onclick="showRegisterForm()">Register now</a></p>
+                <p>New to Art Free Income? <br><a onclick="showRegisterForm()">Create an Account</a></p>
             </div>
         </div>
 
         <!-- Registration Form -->
         <div id="register-form">
-            <h2>Register</h2>
+            <h2>Create Account</h2>
+            <p class="subtitle">Join us and start earning today</p>
+            
             <div class="form-group">
                 <label for="register-phone">Phone Number</label>
-                <input type="text" id="register-phone" placeholder="Enter phone number" required>
+                <input type="text" id="register-phone" placeholder="e.g. 017xxxxxxxx" required>
             </div>
+            
             <div class="form-group password-container">
                 <label for="register-password">Password</label>
-                <input type="password" id="register-password" placeholder="Create password" required>
+                <input type="password" id="register-password" placeholder="Min. 6 characters" required>
                  <span class="toggle-password" onclick="togglePasswordVisibility('register-password')">👁️</span>
             </div>
+            
             <div class="form-group">
                 <label for="confirm-password">Confirm Password</label>
-                <input type="password" id="confirm-password" placeholder="Confirm password" required>
+                <input type="password" id="confirm-password" placeholder="Re-enter password" required>
             </div>
-            <!-- Invitation Code is Optional -->
+            
             <div class="form-group">
                 <label for="invitation-code">Invitation Code (Optional)</label>
                 <input type="text" id="invitation-code" placeholder="Enter code if you have one">
             </div>
-            <button onclick="registerUser()">Register</button>
+            
+            <button onclick="registerUser()">Sign Up</button>
+            
             <div class="toggle-form">
-                <p>Already have an account? <a onclick="showLoginForm()">Login</a></p>
+                <p>Already have an account? <a onclick="showLoginForm()">Login Here</a></p>
             </div>
         </div>
     </div>
@@ -170,7 +250,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
 
     <script>
-        // Updated Configuration provided by you
+        // Configuration
         const firebaseConfig = {
           apiKey: "AIzaSyA-6c8nN8TUj9V8km-NAVkjgoIeQ5m7_ms",
           authDomain: "art-732d1.firebaseapp.com",
@@ -185,14 +265,33 @@
         const auth = firebase.auth();
         const database = firebase.database();
 
+        // UI Toggles with Animation Reset
         function showRegisterForm() {
-            document.getElementById('login-form').style.display = 'none';
-            document.getElementById('register-form').style.display = 'block';
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const container = document.querySelector('.container');
+            
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+            
+            // Re-trigger animation
+            container.style.animation = 'none';
+            container.offsetHeight; /* trigger reflow */
+            container.style.animation = 'slideUp 0.5s ease-out';
         }
 
         function showLoginForm() {
-            document.getElementById('register-form').style.display = 'none';
-            document.getElementById('login-form').style.display = 'block';
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const container = document.querySelector('.container');
+
+            registerForm.style.display = 'none';
+            loginForm.style.display = 'block';
+
+            // Re-trigger animation
+            container.style.animation = 'none';
+            container.offsetHeight; /* trigger reflow */
+            container.style.animation = 'slideUp 0.5s ease-out';
         }
 
         function togglePasswordVisibility(id) {
@@ -224,18 +323,14 @@
                 return;
             }
 
-            // Scenario 1: No invitation code provided
             if (invitationCode === "") {
                 createFirebaseUser(phone, password, null);
-            } 
-            // Scenario 2: Invitation code provided
-            else {
+            } else {
                 database.ref('users/' + invitationCode).once('value').then(snapshot => {
                     if (!snapshot.exists()) {
                         alert("Invalid Invitation Code. Please remove it or enter a valid one.");
                         return;
                     }
-                    // Code valid, proceed
                     createFirebaseUser(phone, password, invitationCode);
                 }).catch(error => {
                     alert("Error checking code: " + error.message);
@@ -243,10 +338,10 @@
             }
         }
 
-        // Helper function to create user
         function createFirebaseUser(phone, password, referrerUid) {
             const email = phone + "@artfreeincome.com";
-
+            // Show loading state (optional UI improvement could go here)
+            
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     const newUser = userCredential.user;
@@ -259,15 +354,12 @@
                         createdAt: new Date().toISOString()
                     };
 
-                    // If there was a referrer, save who it was
                     if (referrerUid) {
                         userData.usedInvitationCode = referrerUid;
                     }
 
-                    // Step 1: Save new user data
                     database.ref('users/' + newUser.uid).set(userData);
 
-                    // Step 2: If referrer exists, update their count
                     if (referrerUid) {
                         const referrerRef = database.ref('users/' + referrerUid + '/referralCount');
                         referrerRef.transaction(currentCount => {
@@ -275,7 +367,7 @@
                         });
                     }
 
-                    alert("Registration successful! Please login.");
+                    alert("Registration successful! Welcome to Art Free Income.");
                     showLoginForm();
                 })
                 .catch((error) => {

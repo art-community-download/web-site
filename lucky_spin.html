@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Spin - Watch & Win</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Wheel Styling */
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 10px solid white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            /* Creating segments with conic-gradient */
+            background: conic-gradient(
+                #FF6B6B 0deg 45deg,    /* 10 */
+                #4ECDC4 45deg 90deg,   /* 20 */
+                #45B7D1 90deg 135deg,  /* 50 */
+                #96CEB4 135deg 180deg, /* 5 */
+                #FFEEAD 180deg 225deg, /* 100 */
+                #D4A5A5 225deg 270deg, /* 0 */
+                #9B59B6 270deg 315deg, /* 15 */
+                #34495E 315deg 360deg  /* 30 */
+            );
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Marker/Needle */
+        .marker {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: #e74c3c;
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+            z-index: 10;
+        }
+
+        /* Center Dot */
+        .wheel::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .values {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+        }
+        
+        /* Placing numbers (Approximation for 8 segments) */
+        .val { position: absolute; left: 50%; top: 50%; transform-origin: 0 0; font-size: 1.2rem; }
+
+        /* Buttons */
+        .spin-btn {
+            background: linear-gradient(to right, #f1c40f, #f39c12);
+            color: #2d3436;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(241, 196, 15, 0.4);
+            transition: transform 0.2s;
+        }
+        
+        .spin-btn:disabled { background: #95a5a6; cursor: not-allowed; box-shadow: none; }
+        .spin-btn:active { transform: scale(0.95); }
+
+        .home-link { display: block; margin-top: 20px; color: rgba(255,255,255,0.7); text-decoration: none; }
+
+        /* Fake Ad Modal Styling */
+        .ad-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .ad-content {
+            background: white; color: black; padding: 30px; border-radius: 10px; text-align: center; max-width: 90%;
+        }
+        .ad-timer { font-size: 2rem; font-weight: bold; margin: 20px 0; color: #e74c3c; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Fake Ad Modal -->
+    <div id="ad-modal" class="ad-modal">
+        <div class="ad-content">
+            <h3>Sponsored Ad</h3>
+            <p>Please watch this ad to earn your spin.</p>
+            <div style="margin: 20px; background: #eee; height: 150px; display:flex; align-items:center; justify-content:center; border: 1px dashed #999;">
+                [ ADVERTISEMENT SPACE ]
+            </div>
+            <div class="ad-timer" id="ad-timer">5</div>
+            <p style="font-size: 0.8rem; color: #666;">Spinning will start automatically...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="stats-card">
+            <div><i class="fas fa-coins"></i> Balance: <span id="balance">0</span> TC</div>
+            <div><i class="fas fa-sync"></i> Left: <span id="spins-left">10</span>/10</div>
+        </div>
+
+        <div class="wheel-container">
+            <div class="marker"></div>
+            <div class="wheel" id="wheel">
+                <!-- Values positioned via CSS transform -->
+                <span class="val" style="transform: rotate(22.5deg) translate(0, -110px);">10</span>
+                <span class="val" style="transform: rotate(67.5deg) translate(0, -110px);">20</span>
+                <span class="val" style="transform: rotate(112.5deg) translate(0, -110px);">50</span>
+                <span class="val" style="transform: rotate(157.5deg) translate(0, -110px);">5</span>
+                <span class="val" style="transform: rotate(202.5deg) translate(0, -110px);">100</span>
+                <span class="val" style="transform: rotate(247.5deg) translate(0, -110px);">0</span>
+                <span class="val" style="transform: rotate(292.5deg) translate(0, -110px);">15</span>
+                <span class="val" style="transform: rotate(337.5deg) translate(0, -110px);">30</span>
+            </div>
+        </div>
+
+        <button id="spin-btn" class="spin-btn" onclick="triggerAdAndSpin()">SPIN NOW</button>
+        <p id="msg" style="margin-top: 15px; height: 20px; font-weight: 600;"></p>
+
+        <a href="home.html" class="home-link">Back to Home</a>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA-6c8nN8TUj9V8km-NAVkjgoIeQ5m7_ms",
+            authDomain: "art-732d1.firebaseapp.com",
+            databaseURL: "https://art-732d1-default-rtdb.firebaseio.com",
+            projectId: "art-732d1",
+            storageBucket: "art-732d1.appspot.com",
+            messagingSenderId: "901862985233",
+            appId: "1:901862985233:web:ddfd6b7c8a57c65ef0ebb0"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        let currentUser = null;
+
+        // Game Configuration
+        const MAX_SPINS = 10;
+        const SEGMENTS = [10, 30, 15, 0, 100, 5, 50, 20]; // Counter-clockwise order based on CSS
+        // Note: The order in array must match the visual order counter-clockwise from top
+        // Visual: 10, 20, 50, 5, 100, 0, 15, 30 (Clockwise)
+        // Array for Logic (Counter-Clockwise to match rotation):
+        // 10, 30, 15, 0, 100, 5, 50, 20
+        
+        let currentRotation = 0;
+        let isSpinning = false;
+        let spinsToday = 0;
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                loadUserData();
+            } else {
+                window.location.href = 'login_register.html';
+            }
+        });
+
+        function loadUserData() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const userRef = database.ref('users/' + currentUser.uid);
+
+            userRef.on('value', snapshot => {
+                const data = snapshot.val() || {};
+                
+                // Check daily reset
+                if (data.lastSpinDate !== todayStr) {
+                    spinsToday = 0; // New day
+                } else {
+                    spinsToday = data.spinsCount || 0;
+                }
+
+                document.getElementById('balance').innerText = data.balance || 0;
+                document.getElementById('spins-left').innerText = Math.max(0, MAX_SPINS - spinsToday);
+                
+                const btn = document.getElementById('spin-btn');
+                if (spinsToday >= MAX_SPINS) {
+                    btn.disabled = true;
+                    btn.innerText = "Limit Reached";
+                    btn.style.background = "#555";
+                }
+            });
+        }
+
+        // --- STEP 1: AD LOGIC ---
+        function triggerAdAndSpin() {
+            if (isSpinning) return;
+            if (spinsToday >= MAX_SPINS) {
+                alert("Daily spin limit reached!");
+                return;
+            }
+
+            // Show Ad Modal
+            const modal = document.getElementById('ad-modal');
+            const timerEl = document.getElementById('ad-timer');
+            let timeLeft = 5; // 5 seconds ad
+
+            modal.style.display = 'flex';
+            timerEl.innerText = timeLeft;
+
+            const timer = setInterval(() => {
+                timeLeft--;
+                timerEl.innerText = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    modal.style.display = 'none';
+                    // Ad Finished -> Start Spin
+                    startSpin();
+                }
+            }, 1000);
+
+            // REAL AD INTEGRATION NOTE:
+            // If you use AdMob/AdSense, call their show function here.
+            // Put startSpin() inside the 'onAdClosed' or 'onRewardEarned' callback.
+        }
+
+        // --- STEP 2: SPIN LOGIC ---
+        function startSpin() {
+            isSpinning = true;
+            document.getElementById('spin-btn').disabled = true;
+            document.getElementById('msg').innerText = "Good Luck...";
+
+            const wheel = document.getElementById('wheel');
+            
+            // Random degree calculation (at least 5 full rotations)
+            const randomDeg = Math.floor(Math.random() * 360);
+            const totalRotate = 1800 + randomDeg; // 360 * 5 + random
+            
+            currentRotation += totalRotate;
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+            // Wait for animation to finish (4 seconds)
+            setTimeout(() => {
+                calculateReward(currentRotation);
+            }, 4000);
+        }
+
+        // --- STEP 3: REWARD CALCULATION ---
+        function calculateReward(rotation) {
+            const actualDeg = rotation % 360;
+            const segmentAngle = 360 / 8; // 45 degrees per segment
+            
+            // Since pointer is at top (0 deg visual), calculate index
+            // We rotate wheel clockwise, so values pass counter-clockwise under pointer
+            // Formula to find index based on rotation
+            const index = Math.floor(((360 - actualDeg) % 360) / segmentAngle);
+            
+            // Fixed Array Mapping: [10, 20, 50, 5, 100, 0, 15, 30] (Visual Clockwise)
+            // But mathematical index needs alignment. 
+            // Let's rely on simple value logic:
+            // Top is 0-45 (10), 45-90 (30), etc. depending on your array setup.
+            // Using the ARRAY defined at top: [10, 30, 15, 0, 100, 5, 50, 20]
+            
+            const reward = SEGMENTS[index];
+            processTransaction(reward);
+        }
+
+        function processTransaction(amount) {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const userRef = database.ref('users/' + currentUser.uid);
+
+            userRef.transaction(userData => {
+                if (userData) {
+                    // Update Date check inside transaction
+                    if (userData.lastSpinDate !== todayStr) {
+                        userData.spinsCount = 0;
+                        userData.lastSpinDate = todayStr;
+                    }
+
+                    if ((userData.spinsCount || 0) < MAX_SPINS) {
+                        userData.balance = (userData.balance || 0) + amount;
+                        userData.spinsCount = (userData.spinsCount || 0) + 1;
+                        userData.lastSpinDate = todayStr;
+                        return userData;
+                    }
+                }
+                return; // Abort if limit reached abnormally
+            }, (error, committed, snapshot) => {
+                isSpinning = false;
+                document.getElementById('spin-btn').disabled = false;
+                
+                if (committed) {
+                    const val = snapshot.val();
+                    if(val.spinsCount >= MAX_SPINS) {
+                        document.getElementById('spin-btn').disabled = true;
+                        document.getElementById('spin-btn').innerText = "Done for Today";
+                    }
+
+                    if (amount > 0) {
+                        document.getElementById('msg').innerText = `🎉 You Won ${amount} TC!`;
+                        document.getElementById('msg').style.color = "#2ecc71";
+                    } else {
+                        document.getElementById('msg').innerText = `😢 Better luck next time!`;
+                        document.getElementById('msg').style.color = "#e74c3c";
+                    }
+                } else {
+                    alert("Something went wrong or limit reached.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

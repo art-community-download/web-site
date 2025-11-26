@@ -4,199 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Tasks - Art Free Income</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; color: #2d3436; }
+        .container { max-width: 600px; margin: 0 auto; padding-bottom: 30px; }
+        
+        .header-card { background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 25px; }
+        .task-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        
+        .task-icon { width: 50px; height: 50px; background: #e3f2fd; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #2196f3; margin-right: 15px; }
+        .task-info { flex-grow: 1; }
+        .task-title { font-weight: 600; }
+        .task-reward { color: #f1c40f; font-weight: 700; font-size: 0.85rem; }
 
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #2d3436;
-        }
+        .action-btn { padding: 8px 15px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; min-width: 90px; }
+        .btn-start { background: linear-gradient(to right, #6c5ce7, #a29bfe); color: white; }
+        .btn-timer { background: #f1f2f6; color: #e17055; cursor: default; }
+        .btn-done { background: #00b894; color: white; cursor: default; }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding-bottom: 30px;
-        }
-
-        /* Header Section */
-        .header-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            margin-bottom: 25px;
-        }
-
-        .header-icon {
-            font-size: 2.5rem;
-            color: #6c5ce7;
-            margin-bottom: 10px;
-        }
-
-        .header-card h2 {
-            font-weight: 700;
-            color: #2d3436;
-            margin-bottom: 5px;
-        }
-
-        .header-card p {
-            color: #636e72;
-            font-size: 0.9rem;
-        }
-
-        /* Task List Styling */
-        .task-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .task-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .task-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-
-        .task-icon {
-            width: 50px;
-            height: 50px;
-            background: #e3f2fd;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: #2196f3;
-            flex-shrink: 0;
-            margin-right: 15px;
-        }
-
-        .task-info {
-            flex-grow: 1;
-        }
-
-        .task-title {
-            font-weight: 600;
-            font-size: 1rem;
-            color: #2d3436;
-            margin-bottom: 4px;
-        }
-
-        .task-reward {
-            font-size: 0.85rem;
-            color: #f1c40f; /* Gold color */
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* Buttons */
-        .action-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            min-width: 100px;
-        }
-
-        .btn-start {
-            background: linear-gradient(to right, #6c5ce7, #a29bfe);
-            color: white;
-            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
-        }
-
-        .btn-start:hover {
-            opacity: 0.9;
-            transform: scale(1.05);
-        }
-
-        .btn-timer {
-            background: #f1f2f6;
-            color: #e17055;
-            cursor: default;
-            font-family: monospace;
-            font-size: 0.95rem;
-            border: 1px solid #e1e1e1;
-        }
-
-        /* Loading State */
-        .loading-container {
-            text-align: center;
-            padding: 20px;
-            color: white;
-        }
-
-        .home-link {
-            display: block;
-            text-align: center;
-            margin-top: 25px;
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            opacity: 0.9;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 12px;
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
-            transition: background 0.3s;
-        }
-
-        .home-link:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
+        .home-link { display: block; text-align: center; margin-top: 25px; color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px; border-radius: 10px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        
         <div class="header-card">
-            <div class="header-icon"><i class="fas fa-clipboard-list"></i></div>
             <h2>Daily Tasks</h2>
-            <p>Complete tasks to earn Taka Coins instantly!</p>
+            <p>Complete tasks to unlock VIP Salary!</p>
         </div>
 
-        <div id="task-list" class="task-list">
-            <div class="loading-container">
-                <i class="fas fa-spinner fa-spin fa-2x"></i>
-                <p style="margin-top: 10px;">Loading Available Tasks...</p>
-            </div>
+        <div id="task-list">
+            <div style="text-align: center; color: white;">Loading...</div>
         </div>
 
-        <a href="home.html" class="home-link">
-            <i class="fas fa-arrow-left"></i> Back to Dashboard
-        </a>
+        <a href="home.html" class="home-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
     </div>
 
     <!-- Firebase SDK -->
@@ -218,195 +62,148 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const database = firebase.database();
-        
         let currentUserId = null;
-        const TASK_DURATION_HOURS = 24; // Task resets after 24 hours
+
+        // টাস্কের সময় (টেস্টিংয়ের জন্য ১০ সেকেন্ড দেওয়া হলো, আপনি ২৪ ঘণ্টা চাইলে 24 * 60 * 60 * 1000 দিন)
+        const TASK_DURATION_MS = 15000; // 15 Seconds for testing
 
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUserId = user.uid;
-                loadAndProcessTasks();
+                loadTasks();
             } else {
                 window.location.href = 'login_register.html';
             }
         });
 
-        // --- Core Logic: Load, Check, Render ---
-        async function loadAndProcessTasks() {
+        async function loadTasks() {
             const taskListDiv = document.getElementById('task-list');
-            
-            const tasksRef = database.ref('tasks');
-            const userRef = database.ref(`users/${currentUserId}`);
+            const todayStr = new Date().toISOString().split('T')[0];
 
             try {
-                const [tasksSnapshot, userSnapshot] = await Promise.all([
-                    tasksRef.once('value'),
-                    userRef.once('value')
+                const [tasksSnap, userSnap] = await Promise.all([
+                    database.ref('tasks').once('value'),
+                    database.ref(`users/${currentUserId}`).once('value')
                 ]);
 
-                const allTasks = tasksSnapshot.val();
-                const userData = userSnapshot.val();
-                const userTaskProgress = userData.taskProgress || {};
-                
-                // 1. Check for Completed Tasks (Time Expired)
+                const allTasks = tasksSnap.val() || {};
+                const userData = userSnap.val() || {};
+                const taskProgress = userData.taskProgress || {};
+                const completedLog = (userData.completedTaskLog && userData.completedTaskLog[todayStr]) ? userData.completedTaskLog[todayStr] : {};
+
+                // Check pending tasks
                 let tasksToComplete = [];
-                for (const taskId in userTaskProgress) {
-                    if (Date.now() >= userTaskProgress[taskId].completionTime) {
+                for (const taskId in taskProgress) {
+                    if (Date.now() >= taskProgress[taskId].completionTime) {
                         tasksToComplete.push(taskId);
                     }
                 }
-
-                // 2. Process Reward if any
+                
                 if (tasksToComplete.length > 0) {
                     await completeTasks(tasksToComplete, allTasks);
-                    // Reload to update UI
-                    loadAndProcessTasks();
+                    loadTasks(); // Reload after update
                     return;
                 }
-                
-                // 3. Render UI
-                renderTasks(allTasks, userTaskProgress);
+
+                renderTasks(allTasks, taskProgress, completedLog);
 
             } catch (error) {
-                console.error("Error loading tasks:", error);
-                taskListDiv.innerHTML = '<p style="text-align:center; color:white;">Failed to load tasks.</p>';
+                console.error(error);
+                taskListDiv.innerHTML = '<p style="color:white; text-align:center;">Error loading tasks</p>';
             }
         }
 
-        function renderTasks(allTasks, userTaskProgress) {
-            const taskListDiv = document.getElementById('task-list');
-            taskListDiv.innerHTML = ''; // Clear loading
+        function renderTasks(allTasks, taskProgress, completedLog) {
+            const listDiv = document.getElementById('task-list');
+            listDiv.innerHTML = '';
 
-            if (!allTasks) {
-                taskListDiv.innerHTML = `
-                    <div style="text-align:center; background:white; padding:20px; border-radius:15px;">
-                        <i class="fas fa-box-open" style="font-size:2rem; color:#ccc;"></i>
-                        <p style="color:#666; margin-top:10px;">No tasks available right now.</p>
-                    </div>`;
+            if (Object.keys(allTasks).length === 0) {
+                listDiv.innerHTML = '<p style="color:white; text-align:center;">No tasks available.</p>';
                 return;
             }
 
-            for (const taskId in allTasks) {
-                const task = allTasks[taskId];
-                const progress = userTaskProgress[taskId];
+            for (const [taskId, task] of Object.entries(allTasks)) {
+                const isCompletedToday = completedLog[taskId] === true;
+                const inProgress = taskProgress[taskId];
                 
-                const taskElement = document.createElement('div');
-                taskElement.classList.add('task-card');
+                let btnHtml = '';
 
-                let actionHTML = '';
-
-                // Check if task is running
-                if (progress && progress.status === 'inProgress') {
-                    actionHTML = `
-                        <button class="action-btn btn-timer" data-completion-time="${progress.completionTime}">
-                            <i class="fas fa-clock"></i> ...
-                        </button>
-                    `;
+                if (isCompletedToday) {
+                    btnHtml = `<button class="action-btn btn-done"><i class="fas fa-check"></i> Done</button>`;
+                } else if (inProgress) {
+                    btnHtml = `<button class="action-btn btn-timer" data-end="${inProgress.completionTime}">...</button>`;
                 } else {
-                    actionHTML = `
-                        <button class="action-btn btn-start" onclick="startTask('${taskId}', '${task.link}')">
-                            Start <i class="fas fa-arrow-right"></i>
-                        </button>
-                    `;
+                    btnHtml = `<button class="action-btn btn-start" onclick="startTask('${taskId}', '${task.link}')">Start</button>`;
                 }
 
-                // Task HTML Structure
-                taskElement.innerHTML = `
-                    <div class="task-icon">
-                        <i class="fab fa-chrome"></i>
-                    </div>
-                    <div class="task-info">
-                        <div class="task-title">${task.name}</div>
-                        <div class="task-reward">
-                            <i class="fas fa-coins"></i> ${task.reward || 0} TC
+                listDiv.innerHTML += `
+                    <div class="task-card">
+                        <div style="display:flex; align-items:center;">
+                            <div class="task-icon"><i class="fab fa-chrome"></i></div>
+                            <div class="task-info">
+                                <div class="task-title">${task.name}</div>
+                                <div class="task-reward">+${task.reward} TC</div>
+                            </div>
                         </div>
+                        ${btnHtml}
                     </div>
-                    ${actionHTML}
                 `;
-                taskListDiv.appendChild(taskElement);
             }
-
-            // Start Timer Loop
-            updateAllTimers();
-            if(!window.timerInterval) {
-                window.timerInterval = setInterval(updateAllTimers, 1000);
-            }
+            startTimerLoop();
         }
 
-        // --- Start Task Function ---
         function startTask(taskId, link) {
-            // 1. Open Link
-            if (link) {
-                window.open(link, '_blank');
-            }
+            if(link) window.open(link, '_blank');
 
-            // 2. Save Progress to DB
-            const completionTime = Date.now() + (TASK_DURATION_HOURS * 60 * 60 * 1000);
-            
+            const completionTime = Date.now() + TASK_DURATION_MS;
             database.ref(`users/${currentUserId}/taskProgress/${taskId}`).set({
-                status: 'inProgress',
+                status: 'running',
                 completionTime: completionTime
-            }).then(() => {
-                // Reload UI to show timer
-                loadAndProcessTasks(); 
-            });
+            }).then(() => loadTasks());
         }
 
-        // --- Claim/Complete Task Logic ---
         async function completeTasks(taskIds, allTasks) {
+            const todayStr = new Date().toISOString().split('T')[0];
             let totalReward = 0;
-            
-            for (const taskId of taskIds) {
-                if (allTasks[taskId]) {
-                    totalReward += parseFloat(allTasks[taskId].reward) || 0;
+
+            taskIds.forEach(id => {
+                if(allTasks[id]) totalReward += parseFloat(allTasks[id].reward);
+            });
+
+            const userRef = database.ref(`users/${currentUserId}`);
+            await userRef.transaction(user => {
+                if (user) {
+                    user.balance = (user.balance || 0) + totalReward;
+                    if (!user.completedTaskLog) user.completedTaskLog = {};
+                    if (!user.completedTaskLog[todayStr]) user.completedTaskLog[todayStr] = {};
+
+                    taskIds.forEach(id => {
+                        user.completedTaskLog[todayStr][id] = true; // Mark as done for today
+                        if(user.taskProgress) delete user.taskProgress[id]; // Remove from running
+                    });
                 }
-            }
-
-            if (totalReward > 0) {
-                const userRef = database.ref(`users/${currentUserId}`);
-                
-                await userRef.transaction(userData => {
-                    if (userData) {
-                        userData.balance = (userData.balance || 0) + totalReward;
-                        if (!userData.taskProgress) userData.taskProgress = {};
-                        
-                        // Remove task from progress (so it can be done again next time or marked done)
-                        // In this logic, we remove it so it resets.
-                        taskIds.forEach(id => {
-                            delete userData.taskProgress[id]; 
-                        });
-                    }
-                    return userData;
-                });
-
-                alert(`🎉 Task Completed! ${totalReward} TC added to your balance.`);
-            }
+                return user;
+            });
+            alert(`Tasks Completed! +${totalReward} TC Added.`);
         }
 
-        // --- Countdown Timer Logic ---
-        function updateAllTimers() {
-            document.querySelectorAll('.btn-timer').forEach(timerEl => {
-                const completionTime = parseInt(timerEl.getAttribute('data-completion-time'));
-                const remaining = completionTime - Date.now();
-
-                if (remaining > 0) {
-                    const hours = Math.floor(remaining / (1000 * 60 * 60));
-                    const minutes = Math.floor((remaining / (1000 * 60)) % 60);
-                    const seconds = Math.floor((remaining / 1000) % 60);
+        function startTimerLoop() {
+            if(window.timerInterval) clearInterval(window.timerInterval);
+            window.timerInterval = setInterval(() => {
+                document.querySelectorAll('.btn-timer').forEach(btn => {
+                    const endTime = parseInt(btn.getAttribute('data-end'));
+                    const left = endTime - Date.now();
                     
-                    // Format nicely: 23h 59m 59s
-                    timerEl.innerHTML = `<i class="fas fa-clock"></i> ${hours}h ${minutes}m`;
-                } else {
-                    timerEl.innerHTML = '<i class="fas fa-check-circle"></i> Checking...';
-                    // The main reload function will detect this expiry and add balance
-                    // We can trigger reload here if we want instant update, but interval handles display
-                    if(remaining < -2000) { // Slight buffer
-                        loadAndProcessTasks();
+                    if (left <= 0) {
+                        btn.innerText = "Checking...";
+                        if (left < -2000) loadTasks(); // Force reload
+                    } else {
+                        const s = Math.ceil(left / 1000);
+                        btn.innerText = `${s}s`;
                     }
-                }
-            });
+                });
+            }, 1000);
         }
     </script>
-
 </body>
 </html>
